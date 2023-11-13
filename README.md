@@ -4,9 +4,8 @@
 This repository contains research and analysis focusing on game development, particularly examining the impact of Procedural Content Generation (PCG) and other AI/ML technologies. The project aims to explore the differences in development time, cost, performance, innovation, and user satisfaction between games that utilize PCG and those that do not.
 
 ## Disclaimer
-Most of the data in the CSV file is obtained from Wikipedia; however, certain portions of the data, like innovation and performance,
-have been temporarily filled in with believable data using ChatGPT 4.0. Therefore, the dataset should not yet be used as a reference 
-for other projects or research.
+This project is a work in progress. Most of the data in the CSV file is obtained from Wikipedia or using publicly available information; however, certain portions of the data, like innovation and performance,
+have been temporarily filled in with believable data using ChatGPT 4.0. Therefore, the dataset should not yet be used as a reference for other projects or research.
 
 ## Repository Structure
 - `game_data.csv`: This CSV file contains the dataset used for analysis, featuring details on various games including development time, cost, and other relevant metrics.
