@@ -1,0 +1,17 @@
+game_name,pcg,dev_time,cost,performance,innovation,user_satisfaction
+No Man's Sky,True,32,20000000,85,90,61
+Elite Dangerous,True,34,25000000,88,85,80
+Starfield,True,84,30000000,90,92,86
+Minecraft,True,35,5000000,95,95,93
+Stardew Valley,True,48,1000000,90,88,88
+Terraria,True,5,2000000,88,85,83
+Valheim,True,71,1500000,92,90,90
+Dwarf Fortress,True,251,200000,85,80,93
+The Legend of Zelda: Breath of the Wild,False,60,70000000,95,95,97
+The Witcher 3: Wild Hunt,False,42,81000000,95,90,93
+Red Dead Redemption,False,60,80000000,90,88,95
+Grand Theft Auto V,False,60,265000000,95,90,97
+God of War (2018),False,60,50000000,95,92,94
+Horizon Zero Dawn,False,72,47000000,90,88,90
+Spider-Man (PS4),False,48,50000000,92,90,87
+Ghost of Tsushima,False,60,60000000,90,88,83
