@@ -41,7 +41,7 @@ def plot_bar_chart(column, stat_values, test_stat, p_val, test_type, title, ylab
     plt.title(title)
     plt.ylabel(ylabel)
     plt.xlabel('Uses PCG')
-    plt.text(0.5, max(stat_values[column]), f'{test_type} Stat: {test_stat:.2f}, P-val: {p_val:.2e}', 
+    plt.text(0.5, max(stat_values[column]), f'{test_type} Stat: {test_stat:.5f}, P-val: {p_val:.5f}', 
              horizontalalignment='center', color='black', weight='semibold')
     plt.tight_layout()
     # Saving the figure
@@ -79,6 +79,13 @@ columns_with_commas = ['budget', 'revenue', 'profit']
 for column in columns_with_commas:
     df[column] = df[column].str.replace(',', '').astype(float)
 
+# Creating directories for saving plots if they don't exist
+histogram_dir = 'results/distributions'
+bar_chart_dir = 'results'
+
+os.makedirs(histogram_dir, exist_ok=True)
+os.makedirs(bar_chart_dir, exist_ok=True)
+
 # Looping through metrics to plot histograms and visualize data distribution
 for metric in metrics:
     plot_histogram(metric, 'pcg', f'Distribution of {metric.replace("_", " ").title()} by PCG Status', 
@@ -103,9 +110,3 @@ for metric in metrics:
 
     # Displaying results and plotting the bar chart
     plot_bar_chart(metric, stat_values, test_stat, test_p_val, test_type, f'Bar Chart for {metric}', 'Value', f'results/{metric}_bar_chart.png')
-
-# Creating directories for saving plots if they don't exist
-histogram_dir = 'results/distributions'
-bar_chart_dir = 'results'
-os.makedirs(histogram_dir, exist_ok=True)
-os.makedirs(bar_chart_dir, exist_ok=True)
