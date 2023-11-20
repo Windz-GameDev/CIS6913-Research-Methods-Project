@@ -1,41 +1,39 @@
 # Game Development Analysis Project
 
 ## Overview
-This repository contains research and analysis focusing on game development, particularly examining the impact of Procedural Content Generation (PCG) and other AI/ML technologies. The project aims to explore the differences in development time, cost, performance, innovation, and user satisfaction between games that utilize PCG and those that do not.
+This repository contains a comprehensive analysis focusing on game development, particularly examining the impact of Procedural Content Generation (PCG) and other AI/ML technologies. The project's goal is to explore differences in development time, budget, user satisfaction, and profit between games that utilize PCG and those that do not, emphasizing the role of AI in modern game development.
 
 ## Disclaimer
-This project is a work in progress. Most of the data in the CSV file is obtained from Wikipedia or using publicly available information; however, certain portions of the data, like innovation and performance,
-have been temporarily filled in with believable data using ChatGPT 4.0. Therefore, the dataset should not yet be used as a reference for other projects or research.
+This project is a work in progress. The data in `game_data.csv` is primarily sourced from Wikipedia and publicly available information. Portions of the data, particularly regarding innovation and performance, have been generated using believable estimations facilitated by ChatGPT 4.0. As such, the dataset should be used cautiously and is not yet suitable as a primary reference for other projects or research.
 
 ## Repository Structure
-- `game_data.csv`: This CSV file contains the dataset used for analysis, featuring details on various games including development time, cost, and other relevant metrics.
-- `run_analysis.py`: The Python script for conducting the statistical analysis and generating data visualizations.
-- `CIS6913 - Aaron Goldstein - Assignment 4 Deliverable.pdf`: A detailed document explaining the research methodology, literature review, and the study's findings.
-- `result_images/`: A directory containing the visualizations generated from the analysis, illustrating the statistical comparisons.
+- `game_data.csv`: The CSV file with the dataset for analysis, containing details such as development time, cost, profit, and user satisfaction for various games.
+- `run_analysis.py`: A Python script for statistical analysis and data visualization. It includes normality testing, choice of statistical tests (t-test or Mann-Whitney U test) based on data distribution, and generating histograms and bar charts.
+- `CIS6913 - Aaron Goldstein - Assignment 4 Deliverable.pdf`: A document detailing the research methodology, literature review, and study findings.
+- `results/`: Directory containing generated visualizations from the analysis.
+    - `distributions/`: Histograms depicting the distribution of data for each metric.
+    - Bar charts comparing metrics between PCG and non-PCG games.
 
 ## Visualizations
-The script generates several key visualizations to represent the data analysis:
-- Development Time Comparison
-- Development Cost Analysis
-- Game Performance Ratings
-- Innovation in Game Development
-- User Satisfaction Ratings
+The script generates insightful visualizations to represent the data analysis:
+- Histograms for data distribution of development time, budget, profit, and user satisfaction.
+- Bar charts comparing average/median values of development time, budget, profit, and user satisfaction between PCG and non-PCG games.
 
-These visualizations are saved in the `result_images/` folder.
+These visualizations are saved in the `results/` directory, with histograms in `results/distributions/`.
 
 ## Getting Started
 To run the analysis:
 1. Clone this repository to your local machine.
-2. Ensure you have Python installed along with the libraries `pandas`, `matplotlib`, `seaborn`, and `scipy`.
-3. Execute `run_analysis.py` to perform the analysis. The script reads data from `game_data.csv` and outputs the results as visualizations in the `result_images/` directory.
+2. Ensure Python is installed along with `pandas`, `matplotlib`, `seaborn`, and `scipy`.
+3. Execute `run_analysis.py`. The script processes data from `game_data.csv` and saves the results as visualizations in the `results/` directory.
 
-Refer to the `CIS6913 - Aaron Goldstein - Assignment 4 Deliverable.pdf` for an in-depth understanding of the research and findings.
+Refer to the `CIS6913 - Aaron Goldstein - Assignment 4 Deliverable.pdf` for a comprehensive understanding of the research and findings.
 
 ## Contributions
-Contributions, feedback, and suggestions are highly welcome. Feel free to fork the repository, make your changes, and create a pull request.
+Contributions, feedback, and suggestions are welcome. Feel free to fork the repository, make changes, and submit a pull request.
 
 ## License
 This project is licensed under the [MIT License](LICENSE.md).
 
 ## Contact
-For inquiries or further discussions, please contact n01421643@unf.edu.
+For inquiries or discussions, please contact n01421643@unf.edu.
