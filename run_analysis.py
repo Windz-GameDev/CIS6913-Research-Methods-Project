@@ -32,7 +32,7 @@ def plot_bar_chart(column, stat_values, test_stat, p_val, test_type, title, ylab
     # Choosing label based on test type
     stat_label = 'Median' if 'Mann-Whitney' in test_type else 'Average'
     # Displaying test findings in the console
-    print(f"{title}\n{stat_label} for PCG: {stat_values[stat_values['pcg'] == True][column].values[0]:.2f}, "
+    print(f"{title}:\n{stat_label} for PCG: {stat_values[stat_values['pcg'] == True][column].values[0]:.2f}, "
           f"{stat_label} for non-PCG: {stat_values[stat_values['pcg'] == False][column].values[0]:.2f}, "
           f"{test_type}: {test_stat:.5f}, P-val: {p_val:.5f} ({'Statistically significant' if p_val < 0.05 else 'Not statistically significant'})\n")
     # Creating and configuring the bar plot
@@ -74,6 +74,10 @@ def perform_linear_regression(x, y, data, xlabel, ylabel, title, fig_name):
     plt.title(title)
     plt.savefig(fig_name)
     plt.close()
+
+    # Printing the results
+    correlation_strength = 'high' if abs(r_value) > 0.5 else 'low'
+    print(f"{title}: \nSlope: {slope:.2f}, Intercept: {intercept:.2f}, R-squared: {r_value**2:.2f}, P-value: {p_value:.5f}. This is a {correlation_strength} correlation.\n")
     
     return slope, intercept, r_value**2, p_value
 
@@ -109,7 +113,7 @@ for metric in metrics:
                    metric.replace("_", " ").title(), 'Frequency', f'results/distributions/{metric}.png')
 
 # Conducting statistical analysis and plotting bar charts for each metric
-print("\nStatistics")
+print("Statistics")
 for i in range(100):
     print("-", end="")
 print("\n")
@@ -127,6 +131,12 @@ for metric in metrics:
 
     # Displaying results and plotting the bar chart
     plot_bar_chart(metric, stat_values, test_stat, test_p_val, test_type, f'Bar Chart for {metric}', 'Value', f'results/bar_charts/{metric}_bar_chart.png')
+
+# Analyze key relationships between the different metrics using linear regression
+print("Correlations")
+for i in range(100):
+    print("-", end="")
+print("\n")
 
 # Linear regression analyses and saving the results
 slope, intercept, r_squared, p_value = perform_linear_regression('team_size', 'budget', df, 'Team Size', 'Development Cost', 'Team Size vs Development Cost', 'results/correlations/team_size_vs_budget.png')
