@@ -60,6 +60,23 @@ def plot_histogram(column, hue, title, xlabel, ylabel, fig_name):
     plt.savefig(fig_name)
     plt.close()
 
+# Function to perform linear regression and save the plot results
+def perform_linear_regression(x, y, data, xlabel, ylabel, title, fig_name):
+    # Perform linear regression
+    slope, intercept, r_value, p_value, std_err = stats.linregress(data[x], data[y])
+    
+    # Plotting and saving the plot
+    plt.figure(figsize=(8, 6))
+    sns.scatterplot(x=x, y=y, data=data)
+    plt.plot(data[x], intercept + slope*data[x], 'r')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.savefig(fig_name)
+    plt.close()
+    
+    return slope, intercept, r_value**2, p_value
+
 # Set up argument parser for command line options
 parser = argparse.ArgumentParser(description='Process data including or excluding generated data.')
 parser.add_argument('--include_generated', type=bool, default=False, help='Include generated data if True, exclude if False')
@@ -70,9 +87,9 @@ df = pd.read_csv('game_data.csv')
 # Conditional logic for handling generated data
 if not args.include_generated:
     df.drop(['performance', 'innovation'], axis=1, inplace=True)
-    metrics = ['avg_dev_time', 'budget', 'user_satisfaction', 'profit']
+    metrics = ['avg_dev_time', 'budget', 'user_satisfaction', 'profit', 'team_size']
 else:
-    metrics = ['avg_dev_time', 'budget', 'profit', 'performance', 'innovation', 'user_satisfaction']
+    metrics = ['avg_dev_time', 'budget', 'profit', 'performance', 'innovation', 'user_satisfaction', 'team_size']
 
 # Cleaning data: removing commas and converting to float for specific columns
 columns_with_commas = ['budget', 'revenue', 'profit']
@@ -109,4 +126,13 @@ for metric in metrics:
     test_stat, test_p_val, test_type = perform_statistical_test(metric, is_normal)
 
     # Displaying results and plotting the bar chart
-    plot_bar_chart(metric, stat_values, test_stat, test_p_val, test_type, f'Bar Chart for {metric}', 'Value', f'results/{metric}_bar_chart.png')
+    plot_bar_chart(metric, stat_values, test_stat, test_p_val, test_type, f'Bar Chart for {metric}', 'Value', f'results/bar_charts/{metric}_bar_chart.png')
+
+# Linear regression analyses and saving the results
+slope, intercept, r_squared, p_value = perform_linear_regression('team_size', 'budget', df, 'Team Size', 'Development Cost', 'Team Size vs Development Cost', 'results/correlations/team_size_vs_budget.png')
+slope, intercept, r_squared, p_value = perform_linear_regression('team_size', 'avg_dev_time', df, 'Team Size', 'Development Time', 'Team Size vs Development Time', 'results/correlations/team_size_vs_dev_time.png')
+
+# For PCG, we need to convert it to a numeric value for regression analysis
+df['pcg_numeric'] = df['pcg'].astype(int)
+slope, intercept, r_squared, p_value = perform_linear_regression('team_size', 'pcg_numeric', df, 'Team Size', 'PCG', 'Team Size vs PCG', 'results/correlations/team_size_vs_pcg.png')
+slope, intercept, r_squared, p_value = perform_linear_regression('budget', 'pcg_numeric', df, 'Development Cost', 'PCG', 'Development Cost vs PCG', 'results/correlations/dev_cost_vs_pcg.png')
