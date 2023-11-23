@@ -91,9 +91,9 @@ df = pd.read_csv('game_data.csv')
 # Conditional logic for handling generated data
 if not args.include_generated:
     df.drop(['performance', 'innovation'], axis=1, inplace=True)
-    metrics = ['avg_dev_time', 'budget', 'user_satisfaction', 'profit', 'team_size']
+    metrics = ['avg_dev_time', 'budget', 'profit', 'user_satisfaction', 'team_size']
 else:
-    metrics = ['avg_dev_time', 'budget', 'profit', 'performance', 'innovation', 'user_satisfaction', 'team_size']
+    metrics = ['avg_dev_time', 'budget', 'profit', 'user_satisfaction', 'team_size', 'performance', 'innovation']
 
 # Cleaning data: removing commas and converting to float for specific columns
 columns_with_commas = ['budget', 'revenue', 'profit']
