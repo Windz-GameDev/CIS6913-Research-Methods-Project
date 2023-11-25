@@ -87,9 +87,12 @@ def perform_linear_regression(x, y, data, xlabel, ylabel, title, fig_name):
     print(f"{title} Correlation Results:")
     print(f"  - Slope: {slope:.2f}")
     print(f"  - Intercept: {intercept:.2f}")
+    print(f"  - R: {r_value}")
     print(f"  - R-squared: {r_value**2:.2f}")
     print(f"  - P-value: {p_value:.5f}")
+    correlation_nature = "Positive" if r_value >= 0 else "Negative"
     correlation_strength = 'High Correlation' if abs(r_value) > 0.5 else 'Low Correlation'
+    print(f"  - Nature: {correlation_nature} Correlation")
     print(f"  - Strength: {correlation_strength}\n")
 
     return slope, intercept, r_value**2, p_value
