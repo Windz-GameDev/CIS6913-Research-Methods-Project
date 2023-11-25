@@ -31,10 +31,18 @@ def perform_statistical_test(column, is_normal):
 def plot_bar_chart(column, stat_values, test_stat, p_val, test_type, title, ylabel, fig_name):
     # Choosing label based on test type
     stat_label = 'Median' if 'Mann-Whitney' in test_type else 'Average'
+    
     # Displaying test findings in the console
-    print(f"{title}:\n{stat_label} for PCG: {stat_values[stat_values['pcg'] == True][column].values[0]:.2f}, "
-          f"{stat_label} for non-PCG: {stat_values[stat_values['pcg'] == False][column].values[0]:.2f}, "
-          f"{test_type}: {test_stat:.5f}, P-val: {p_val:.5f} ({'Statistically significant' if p_val < 0.05 else 'Not statistically significant'})\n")
+    print(f"{title} Results:")
+    print(f"  - {stat_label} Values:")
+    print(f"    - PCG: {stat_values[stat_values['pcg'] == True][column].values[0]:.2f}")
+    print(f"    - Non-PCG: {stat_values[stat_values['pcg'] == False][column].values[0]:.2f}")
+    print(f"  - Statistical Test: {test_type}")
+    print(f"    - Test Statistic: {test_stat:.5f}")
+    print(f"    - P-value: {p_val:.5f}")
+    significance = 'Statistically Significant' if p_val < 0.05 else 'Not Statistically Significant'
+    print(f"  - Conclusion: {significance}\n")
+
     # Creating and configuring the bar plot
     plt.figure(figsize=(8, 6))
     sns.barplot(x='pcg', y=column, data=stat_values)
@@ -76,9 +84,14 @@ def perform_linear_regression(x, y, data, xlabel, ylabel, title, fig_name):
     plt.close()
 
     # Printing the results
-    correlation_strength = 'high' if abs(r_value) > 0.5 else 'low'
-    print(f"{title}: \nSlope: {slope:.2f}, Intercept: {intercept:.2f}, R-squared: {r_value**2:.2f}, P-value: {p_value:.5f}. This is a {correlation_strength} correlation.\n")
-    
+    print(f"{title} Correlation Results:")
+    print(f"  - Slope: {slope:.2f}")
+    print(f"  - Intercept: {intercept:.2f}")
+    print(f"  - R-squared: {r_value**2:.2f}")
+    print(f"  - P-value: {p_value:.5f}")
+    correlation_strength = 'High Correlation' if abs(r_value) > 0.5 else 'Low Correlation'
+    print(f"  - Strength: {correlation_strength}\n")
+
     return slope, intercept, r_value**2, p_value
 
 # Set up argument parser for command line options
@@ -113,7 +126,7 @@ for metric in metrics:
                    metric.replace("_", " ").title(), 'Frequency', f'results/distributions/{metric}.png')
 
 # Conducting statistical analysis and plotting bar charts for each metric
-print("Statistics")
+print("\nStatistics")
 for i in range(100):
     print("-", end="")
 print("\n")
@@ -123,6 +136,15 @@ for metric in metrics:
     stat, p_val = perform_normality_test(metric)
     is_normal = p_val >= 0.05
 
+    print(f"{metric.title().replace('_', ' ')} Results:")
+
+    # Printing the results of the normality test
+    print(f"Normality Test for {metric.title().replace('_', ' ')}:")
+    print(f"  - Shapiro-Wilk Test Statistic: {stat:.5f}")
+    print(f"  - P-Value: {p_val:.5f}")
+    normality_status = 'Data is Normally Distributed' if p_val >= 0.05 else 'Data is Not Normally Distributed'
+    print(f"  - Conclusion: {normality_status}\n")
+
     # Deciding on mean or median based on normality
     stat_values = df.groupby('pcg')[metric].mean().reset_index() if is_normal else df.groupby('pcg')[metric].median().reset_index()
     
@@ -130,7 +152,7 @@ for metric in metrics:
     test_stat, test_p_val, test_type = perform_statistical_test(metric, is_normal)
 
     # Displaying results and plotting the bar chart
-    plot_bar_chart(metric, stat_values, test_stat, test_p_val, test_type, f'Bar Chart for {metric}', 'Value', f'results/bar_charts/{metric}_bar_chart.png')
+    plot_bar_chart(metric, stat_values, test_stat, test_p_val, test_type, f'Bar Chart for {metric.title().replace("_", " ")}', 'Value', f'results/bar_charts/{metric}_bar_chart.png')
 
 # Analyze key relationships between the different metrics using linear regression
 print("Correlations")
