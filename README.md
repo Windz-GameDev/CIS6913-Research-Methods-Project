@@ -42,7 +42,7 @@ The `run_analysis.py` script can be executed with an optional `--include_generat
 python run_analysis.py --include_generated True
 ```
 
-By default, generated data like performance and innovation scores are excluded.
+By default, generated data like performance and innovation scores are excluded. The script will produce results based on the data provided in `game_data.csv`, which will be stored in the `results/` directory.
 
 Refer to the `Utilizing_Artificial_Intelligence_in_Game_Development__A_Strategy_for_Cost_and_Time_Efficiency___Finished_Paper-1` for a comprehensive understanding of the research and findings.
 
