@@ -97,6 +97,14 @@ def perform_linear_regression(x, y, data, xlabel, ylabel, title, fig_name):
 
     return slope, intercept, r_value**2, p_value
 
+# Function to get appropriate statistic (mean or median) for the ratio calculations
+def get_statistic(metric):
+    is_normal = perform_normality_test(metric)[1] >= 0.05
+    if is_normal:
+        return df.groupby('pcg')[metric].mean()
+    else:
+        return df.groupby('pcg')[metric].median()
+
 # Set up argument parser for command line options
 parser = argparse.ArgumentParser(description='Process data including or excluding generated data.')
 parser.add_argument('--include_generated', type=bool, default=False, help='Include generated data if True, exclude if False')
@@ -107,9 +115,9 @@ df = pd.read_csv('game_data.csv')
 # Conditional logic for handling generated data
 if not args.include_generated:
     df.drop(['performance', 'innovation'], axis=1, inplace=True)
-    metrics = ['avg_dev_time', 'budget', 'profit', 'user_satisfaction', 'team_size']
+    metrics = ['avg_dev_time', 'budget', 'revenue', 'profit', 'user_satisfaction', 'team_size']
 else:
-    metrics = ['avg_dev_time', 'budget', 'profit', 'user_satisfaction', 'team_size', 'performance', 'innovation']
+    metrics = ['avg_dev_time', 'budget', 'revenue', 'profit', 'user_satisfaction', 'team_size', 'performance', 'innovation']
 
 # Cleaning data: removing commas and converting to float for specific columns
 columns_with_commas = ['budget', 'revenue', 'profit']
@@ -134,6 +142,19 @@ for i in range(100):
     print("-", end="")
 print("\n")
 
+# Y labels for bar charts
+custom_y_labels = {
+    'avg_dev_time': 'Average Development Time (Months)',
+    'budget': 'Budget (in $)',
+    'profit': 'Profit (in $)',
+    'user_satisfaction': 'User Satisfaction (Score)',
+    'team_size': 'Team Size (Number of People)',
+    'revenue': 'Revenue (in $)',
+    'performance': 'Performance (Score)',
+    'innovation': 'Innovation (Score)'
+     # Add other metrics as needed
+}
+
 for metric in metrics:
     # Performing normality test
     stat, p_val = perform_normality_test(metric)
@@ -154,8 +175,11 @@ for metric in metrics:
     # Performing the appropriate statistical test
     test_stat, test_p_val, test_type = perform_statistical_test(metric, is_normal)
 
+    # Retrieve the custom y-label for the current metric, defaulting to 'Value' if not specified
+    ylabel = custom_y_labels.get(metric, 'Value')
+
     # Displaying results and plotting the bar chart
-    plot_bar_chart(metric, stat_values, test_stat, test_p_val, test_type, f'Bar Chart for {metric.title().replace("_", " ")}', 'Value', f'results/bar_charts/{metric}_bar_chart.png')
+    plot_bar_chart(metric, stat_values, test_stat, test_p_val, test_type, f'Bar Chart for {metric.title().replace("_", " ")}', ylabel, f'results/bar_charts/{metric}_bar_chart.png')
 
 # Analyze key relationships between the different metrics using linear regression
 print("Correlations")
@@ -171,3 +195,24 @@ slope, intercept, r_squared, p_value = perform_linear_regression('team_size', 'a
 df['pcg_numeric'] = df['pcg'].astype(int)
 slope, intercept, r_squared, p_value = perform_linear_regression('team_size', 'pcg_numeric', df, 'Team Size', 'PCG', 'Team Size vs PCG', 'results/correlations/team_size_vs_pcg.png')
 slope, intercept, r_squared, p_value = perform_linear_regression('budget', 'pcg_numeric', df, 'Development Cost', 'PCG', 'Development Cost vs PCG', 'results/correlations/dev_cost_vs_pcg.png')
+
+# Ratio calculations
+print("\nRatios Comparison between PCG and Non-PCG")
+for i in range(100):
+    print("-", end="")
+print("\n")
+
+# Calculating ratios using appropriate statistic
+budget_stat = get_statistic('budget')
+profit_stat = get_statistic('profit')
+revenue_stat = get_statistic('revenue')
+
+# Accessing values correctly
+budget_ratio = budget_stat.loc[True] / budget_stat.loc[False]
+profit_ratio = profit_stat.loc[True] / profit_stat.loc[False]
+revenue_ratio = revenue_stat.loc[True] / revenue_stat.loc[False]
+
+# Printing the ratios
+print(f"Budget Ratio (PCG / Non-PCG): {budget_ratio:.3f}")
+print(f"Profit Ratio (PCG / Non-PCG): {profit_ratio:.3f}")
+print(f"Revenue Ratio (PCG / Non-PCG): {revenue_ratio:.3f}\n")
